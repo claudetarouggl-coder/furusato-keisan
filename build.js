@@ -129,6 +129,7 @@ ${withTaxableMode ? `<li>「課税所得から計算」モードでは、入力�
 </ul></section>`;
 
 const guideLinks = depth => `<h2>あわせて読む</h2><div class="links">
+<a href="${rel(depth, "guide/nenmatsu/")}">12月駆け込み完全ガイド</a>
 <a href="${rel(depth, "guide/rakuten/")}">楽天ふるさと納税のやり方</a>
 <a href="${rel(depth, "guide/schedule/")}">ふるさと納税はいつまで？期限まとめ</a>
 <a href="${rel(depth, "guide/onestop/")}">ワンストップ特例とは</a>
@@ -188,6 +189,39 @@ function buildGuide(slug, title, descText, h1, bodyHtml) {
 }
 
 function buildGuides() {
+  buildGuide("nenmatsu",
+    `【${TODAY.y}年】ふるさと納税 12月駆け込み完全ガイド`,
+    `ふるさと納税を12月に駆け込みで済ませる人向けの完全ガイド。上限額の確認から決済完了・ワンストップ特例の申請・確定申告までのタイムラインと、駆け込みでよくある失敗パターンをまとめました。`,
+    "12月駆け込み完全ガイド", `
+<section class="feature"><p>ふるさと納税は<strong>${TODAY.y}年12月31日までに決済が完了した分</strong>が当年分の寄付として扱われます。12月に入ってから慌てて手続きする「駆け込み」は、上限額の見積もりミスや決済タイミングのミスが起きやすい時期です。まずは<a href="${rel(2, "")}">上限額シミュレーター</a>で今年の目安を確認し、余裕を持ったスケジュールで進めましょう。</p></section>
+<h2>12月の駆け込みタイムライン</h2>
+<div class="tbl"><table><thead><tr><th>時期</th><th>やること</th></tr></thead><tbody>
+<tr><td>〜12月中旬</td><td>上限額の確認・返礼品選び</td></tr>
+<tr><td>12月下旬</td><td>決済方法と完了タイミングの確認、申込みを済ませる</td></tr>
+<tr><td><strong>12月31日 23:59</strong></td><td>決済完了の期限（これを過ぎると翌年分の寄付になります）</td></tr>
+<tr><td>翌年<strong>1月10日必着</strong></td><td>ワンストップ特例の申請書提出</td></tr>
+<tr><td>翌年<strong>3月15日頃</strong></td><td>確定申告の期限（ワンストップを使わない・間に合わなかった場合）</td></tr>
+</tbody></table></div>
+<section class="note"><p>3月15日が土日祝にあたる年は期限が数日ずれることがあります。正確な日付はその年の国税庁の発表でご確認ください。</p></section>
+<h2>駆け込みでよくある失敗パターン</h2>
+<ul style="margin-left:1.2em">
+<li><strong>上限額の見積もりミス</strong> — 前年の年収のまま計算してしまい、今年の上限を超えて寄付してしまうケースです。ボーナスや転職で年収が変わった年は特に注意が必要です。<a href="${rel(2, "")}">シミュレーター</a>で今年の年収に近い金額を入力し、少し控えめに寄付するのが安全とされています。</li>
+<li><strong>決済が年をまたぐ</strong> — クレジットカード払いは申込み完了の時点で寄付が確定する場合が多い一方、コンビニ払い・ペイジー・銀行振込などは支払い完了のタイミングが遅れることがあり、年内扱いにならないリスクがあります。年末はクレジットカード決済を選ぶのが確実とされています。</li>
+<li><strong>ワンストップ特例の書類の出し忘れ</strong> — 年末にまとめて何件も寄付すると、申請書の管理が追いつかなくなりがちです。届いた申請書はすぐに記入し、翌年1月10日必着で返送しましょう。間に合わなくても確定申告をすれば同じ控除を受けられます。</li>
+<li><strong>住所変更の手続き漏れ</strong> — 年末年始に引っ越しをした場合、ワンストップ特例の申請書を提出済みでも「申請事項変更届出書」の提出が別途必要になることがあります。該当する方は寄付先の自治体に確認しましょう。</li>
+</ul>
+${affiliateBlock()}
+<section class="note"><p>今年の上限額がまだ不安な方は、寄付を確定する前にもう一度<a href="${rel(2, "")}">上限額シミュレーター</a>で確認しておくと安心です。上限を超えた分は控除されず自己負担になるため、駆け込みほど慎重な見積もりが大切です。</p></section>
+<section class="faq"><h2>よくある質問</h2><dl>
+<dt>12月31日に申し込めば必ず間に合いますか？</dt><dd>決済が23:59までに完了すれば当年分として扱われるのが基本ですが、年末はアクセスが集中しやすく、通信エラーなどで決済完了が年を越してしまう可能性もあります。余裕を持って12月中旬までに済ませるのが安全とされています。</dd>
+<dt>支払い方法によって扱いは変わりますか？</dt><dd>クレジットカード払いは申込み完了のタイミングで寄付が確定するケースが多い一方、コンビニ払いや銀行振込などは入金確認のタイミングが基準になることがあります。詳しい扱いは寄付先の自治体や利用サイトのヘルプでご確認ください。</dd>
+<dt>ワンストップ特例の申請書が1月10日に間に合いませんでした。</dt><dd>その場合でも控除がゼロになるわけではありません。翌年3月15日頃までに確定申告をすれば、同じ内容の控除を受けられます。</dd>
+<dt>年末に上限額を計算するとき、何を基準にすればいいですか？</dt><dd>その年（1月〜12月）の収入見込みが基準です。ボーナスの確定額や年末調整前の給与明細を参考にし、金額が確定していない場合は少し控えめに見積もるのが無難とされています。</dd>
+<dt>楽天ふるさと納税で12月に申し込む場合の注意点はありますか？</dt><dd>楽天ふるさと納税も他のポータルサイトと同様、12月31日23:59までの決済完了が基準とされています。自治体によっては12月31日より前に受付を締め切ることもあるため、申込み前に返礼品ページの受付期限を確認しておくと安心です。</dd>
+</dl></section>
+<section class="note"><p>${TODAY.y}年8月時点の情報です。期限や手続きの詳細は年ごとに変更される場合があるため、寄付前に総務省や寄付先自治体、利用するふるさと納税サイトの公式情報を必ずご確認ください。</p></section>
+${guideLinks(2)}`);
+
   buildGuide("schedule",
     `【${TODAY.y}年】ふるさと納税はいつまで？期限と年末スケジュール`,
     `ふるさと納税の期限は12月31日の決済完了分まで。ワンストップ特例の申請書は翌年1月10日必着、確定申告は翌年3月15日まで。年末に慌てないためのスケジュールをまとめました。`,
@@ -532,7 +566,7 @@ for (const t of linkTargets) {
   const f = path.join(OUT, t, "index.html");
   if (!fs.existsSync(f)) throw new Error(`BROKEN LINK TARGET: ${t}`);
 }
-const expected = 1 + INCOMES.length + 6 + GENRES.length; // guides: rakuten/schedule/onestop/onestop-online/shikumi/demerit
+const expected = 1 + INCOMES.length + 7 + GENRES.length; // guides: nenmatsu/rakuten/schedule/onestop/onestop-online/shikumi/demerit
 if (emittedUrls.length !== expected) throw new Error(`page count ${emittedUrls.length} != ${expected}`);
 if (!emittedUrls.every(u => u.startsWith(BASE))) throw new Error("URL outside BASE");
 console.log(`OK: ${emittedUrls.length} pages + 404 + sitemap generated for ${TODAY_STR}`);

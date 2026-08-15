@@ -3,7 +3,7 @@
 // 生成物: docs/ 以下に index.html + 年収別25ページ + ガイド3ページ + sitemap.xml + 404.html
 const fs = require("fs");
 const path = require("path");
-const { FAMILY, FAMILY_KEYS, furusatoLimit, SOCIAL_RATE } = require("./lib/tax");
+const { FAMILY, FAMILY_KEYS, furusatoLimit, limitFromTaxable, SOCIAL_RATE } = require("./lib/tax");
 const { GOODS, GENRES } = require("./lib/affiliates");
 
 const BASE = "https://claudetarouggl-coder.github.io/furusato-keisan/";
@@ -118,13 +118,14 @@ function affiliateBlock() {
 <ul>${items}</ul></section>`;
 }
 
-const assumptionsNote = `<section class="note"><h2>計算の前提</h2>
+const assumptionsNote = (withTaxableMode) => `<section class="note"><h2>計算の前提</h2>
 <ul style="margin-left:1.2em">
-<li>収入は給与のみ（年末調整のみの給与所得者を想定）</li>
+<li>「年収から計算」モードでは、収入は給与のみ（年末調整のみの給与所得者を想定）</li>
 <li>社会保険料は給与収入の${(SOCIAL_RATE * 100).toFixed(1)}%で概算</li>
 <li>給与所得控除・基礎控除は令和7年度税制改正後の金額で計算</li>
 <li>iDeCo・医療費控除・住宅ローン控除・生命保険料控除などは考慮していません（ある場合、実際の上限はこれより下がります）</li>
 <li>「高校生」は16〜18歳（一般扶養控除）、「大学生」は19〜22歳（特定扶養控除）を指します。中学生以下のお子さんは扶養控除の対象外のため上限額に影響しません</li>
+${withTaxableMode ? `<li>「課税所得から計算」モードでは、入力した住民税の課税所得をそのまま使うため、上記の年収・社会保険料・家族構成に関する前提は適用されません（所得税率のみ課税所得から概算）</li>` : ""}
 </ul></section>`;
 
 const guideLinks = depth => `<h2>あわせて読む</h2><div class="links">
@@ -154,7 +155,7 @@ function buildIncomePage(man, idx) {
 <section class="feature"><p>年収${man}万円の場合、ふるさと納税の控除上限額の目安は<strong>独身・共働きで${yen(single)}</strong>、配偶者を扶養する夫婦で${yen(couple)}です。この金額までの寄付なら、自己負担は実質2,000円で済み、残りは所得税・住民税から控除されます。家族構成別の目安は下の表のとおりです。</p></section>
 <h2>年収${man}万円の家族構成別 上限額目安</h2>
 <div class="tbl"><table><thead><tr><th>家族構成</th><th>控除上限額（目安）</th><th>寄付できる額</th></tr></thead><tbody>${rows}</tbody></table></div>
-${assumptionsNote}
+${assumptionsNote(false)}
 ${affiliateBlock()}
 <h2>返礼品をジャンルから探す</h2>
 ${genreNav(2, null)}
@@ -409,15 +410,26 @@ function buildHome() {
   const body = `
 <section class="sim">
 <p>年収と家族構成を選ぶだけで、自己負担2,000円で寄付できる上限額の目安がわかります。</p>
+<div class="mode">
+<label style="display:inline-flex;align-items:center;gap:.3rem;font-size:.85rem;margin-right:1.2rem"><input type="radio" name="mode" value="salary" checked>年収から計算（給与所得者）</label>
+<label style="display:inline-flex;align-items:center;gap:.3rem;font-size:.85rem"><input type="radio" name="mode" value="taxable">課税所得から計算（確定申告をする方向け）</label>
+</div>
+<div id="mode-salary">
 <label for="salary">年収（額面・万円）</label>
 <input type="number" id="salary" min="100" max="2000" step="10" value="500" inputmode="numeric">
 <label for="family">家族構成</label>
 <select id="family">${familyOptions}</select>
-<div class="result"><div class="lb">控除上限額の目安</div><div class="vl" id="result">—</div><div class="lb" id="result-sub"></div></div>
+</div>
+<div id="mode-taxable" style="display:none">
+<label for="taxable">住民税の課税所得（万円）</label>
+<input type="number" id="taxable" min="10" max="5000" step="1" value="300" inputmode="numeric">
+<p class="lb" style="margin-top:.3rem">住民税決定通知書や課税明細書の「課税標準額」欄の金額です。家族構成の控除は課税所得に反映済みのため入力不要です</p>
+</div>
+<div class="result"><div class="lb">控除上限額の目安</div><div class="vl" id="result">—</div><div class="lb" id="result-sub"></div><div class="lb" id="result-note" style="display:none;margin-top:.4rem"></div></div>
 </section>
 <h2>年収別 控除上限額の早見表</h2>
 <div class="tbl"><table><thead><tr><th>年収</th>${headRow}</tr></thead><tbody>${rows}</tbody></table></div>
-${assumptionsNote}
+${assumptionsNote(true)}
 ${affiliateBlock()}
 <h2>返礼品ジャンル別の選び方</h2>
 ${genreNav(0, null)}
@@ -437,9 +449,15 @@ ${guideLinks(0)}`;
   const script = `<script>
 ${clientLib}
 (function(){
-  var s=document.getElementById("salary"),f=document.getElementById("family"),
-      r=document.getElementById("result"),sub=document.getElementById("result-sub");
+  var modeRadios=document.getElementsByName("mode"),
+      salaryDiv=document.getElementById("mode-salary"),taxableDiv=document.getElementById("mode-taxable"),
+      s=document.getElementById("salary"),f=document.getElementById("family"),t=document.getElementById("taxable"),
+      r=document.getElementById("result"),sub=document.getElementById("result-sub"),note=document.getElementById("result-note");
   function fmt(n){return n.toLocaleString("ja-JP")+"円";}
+  function mode(){
+    for(var i=0;i<modeRadios.length;i++) if(modeRadios[i].checked) return modeRadios[i].value;
+    return "salary";
+  }
   function update(){
     var man=Number(s.value);
     if(!isFinite(man)||man<50||man>2000){r.textContent="—";sub.textContent=man>2000?"年収2,000万円超は基礎控除の逓減があるため対応していません":"年収を50〜2000（万円）で入力してください";return;}
@@ -448,14 +466,36 @@ ${clientLib}
     r.textContent=fmt(v);
     sub.textContent=v>0?"年収"+man+"万円・"+FAMILY[f.value].label+"の場合":"この条件では控除を受けられる住民税がありません";
   }
-  s.addEventListener("input",update);f.addEventListener("change",update);update();
+  function updateTaxable(){
+    var man=Number(t.value);
+    if(!isFinite(man)||man<10||man>5000){r.textContent="—";sub.textContent="住民税の課税所得を10〜5000（万円）で入力してください";return 0;}
+    man=Math.floor(man);
+    var v=limitFromTaxable(man*10000);
+    r.textContent=fmt(v);
+    sub.textContent=v>0?"住民税の課税所得"+man+"万円の場合":"この条件では控除を受けられる住民税がありません";
+    return v;
+  }
+  function refresh(){
+    note.style.display="none";
+    if(mode()==="taxable"){
+      salaryDiv.style.display="none";taxableDiv.style.display="block";
+      var v=updateTaxable();
+      if(v>0){note.textContent="住宅ローン控除で住民税から控除を受けている場合は、実際の上限がこれより下がることがあります";note.style.display="block";}
+    }else{
+      salaryDiv.style.display="block";taxableDiv.style.display="none";
+      update();
+    }
+  }
+  s.addEventListener("input",refresh);f.addEventListener("change",refresh);t.addEventListener("input",refresh);
+  for(var i=0;i<modeRadios.length;i++) modeRadios[i].addEventListener("change",refresh);
+  refresh();
 })();
 </script>`;
 
   writePage("index.html", shell({
     path: "", depth: 0,
     title: "ふるさと納税 上限額シミュレーター｜年収別いくらまで？早見表つき",
-    desc: "ふるさと納税の控除上限額を年収と家族構成から10秒で計算。年収300万〜2000万円の早見表つき。自己負担2,000円で寄付できる金額の目安がすぐわかります。ワンストップ特例や期限の解説も。",
+    desc: "ふるさと納税の控除上限額を年収・家族構成、または課税所得から10秒で計算。年収300万〜2000万円の早見表つき。自己負担2,000円で寄付できる金額の目安がすぐわかります。ワンストップ特例や期限の解説も。",
     h1: "ふるさと納税 控除上限額シミュレーター",
     breadcrumbs: [],
     body,

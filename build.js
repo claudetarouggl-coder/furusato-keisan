@@ -7,7 +7,7 @@ const { FAMILY, FAMILY_KEYS, furusatoLimit, SOCIAL_RATE } = require("./lib/tax")
 const { GOODS } = require("./lib/affiliates");
 
 const BASE = "https://claudetarouggl-coder.github.io/furusato-keisan/";
-const GA_ID = ""; // GA4プロパティ作成後に設定して再ビルド
+const GA_ID = "G-XLZ1ENDZ0Q";
 const OUT = path.join(__dirname, "docs");
 
 const jstNow = new Date(Date.now() + 540 * 60000);

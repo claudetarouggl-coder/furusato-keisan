@@ -131,7 +131,8 @@ const guideLinks = depth => `<h2>あわせて読む</h2><div class="links">
 <a href="${rel(depth, "guide/rakuten/")}">楽天ふるさと納税のやり方</a>
 <a href="${rel(depth, "guide/schedule/")}">ふるさと納税はいつまで？期限まとめ</a>
 <a href="${rel(depth, "guide/onestop/")}">ワンストップ特例とは</a>
-<a href="${rel(depth, "guide/shikumi/")}">上限額の仕組みと計算式</a></div>`;
+<a href="${rel(depth, "guide/shikumi/")}">上限額の仕組みと計算式</a>
+<a href="${rel(depth, "guide/demerit/")}">デメリット・向かない人</a></div>`;
 
 // ---- 年収別ページ ----
 function buildIncomePage(man, idx) {
@@ -263,6 +264,36 @@ ${guideLinks(2)}`);
 <li><strong>年末ギリギリの銀行振込</strong> — 年内扱いにならないリスクがあります。クレジットカード決済が確実です</li>
 </ul>
 ${affiliateBlock()}
+${guideLinks(2)}`);
+
+  buildGuide("demerit",
+    "ふるさと納税のデメリット｜やらないほうがいい人の特徴",
+    "ふるさと納税は節税ではなく、税金の前払いに返礼品が付く制度です。上限超過分は自己負担、手続き忘れで控除ゼロになるリスクなど、寄付前に知っておきたいデメリットと、収入が少ない人など「やらないほうがいい人」の特徴をまとめました。",
+    "ふるさと納税のデメリット・やらないほうがいい人", `
+<section class="feature"><p>ふるさと納税は「節税」ではありません。正しくは、翌年に払うはずの税金の一部を前払いし、その返礼として寄付先の自治体から返礼品を受け取る制度です。実質2,000円の自己負担で返礼品がもらえるため得になる人が多いのは事実ですが、仕組みを理解せずに始めると損をすることもあります。ここではデメリットと、向かない人の特徴を正直にまとめます。</p></section>
+<h2>デメリット・注意点</h2>
+<ul style="margin-left:1.2em">
+<li>控除には上限額があり、<strong>上限を超えた分は控除されず純粋な自己負担</strong>になります</li>
+<li>控除が反映されるのは翌年の税金からのため、寄付した年は<strong>手元資金が一時的に減る</strong>だけです</li>
+<li>ワンストップ特例か確定申告の手続きが必要で、<strong>どちらも忘れると控除が受けられず全額自己負担</strong>になります</li>
+<li>控除が正しく反映されたかは翌年6月ごろ届く<strong>住民税決定通知書を見るまで分からない</strong>ため、結果がすぐには見えません</li>
+<li>返礼品の調達費用は寄付額の3割相当が上限と定められており、「豪華でお得」に見えても<strong>市場価格は寄付額そのものより低い</strong>のが実情です</li>
+<li>自分が住んでいる自治体への寄付は<strong>返礼品がもらえません</strong></li>
+</ul>
+<h2>やらないほうがいい・慎重に検討すべき人</h2>
+<ul style="margin-left:1.2em">
+<li>専業主婦（夫）や学生など<strong>収入が少なく住民税をほぼ納めていない人</strong>（年収150万円以下が目安）は、控除される税金自体が少ないため寄付のメリットがほとんどありません</li>
+<li>その年に<strong>退職・休職などで収入が大きく減る見込みの人</strong>は、上限額を高く見積もったまま寄付すると超過分が自己負担になりがちです</li>
+<li><strong>住宅ローン控除の初年度に確定申告する人</strong>は、他の控除との兼ね合いで上限額の計算がずれることがあるため、上限に余裕を持たせるべきです</li>
+<li><strong>手続きを忘れがちな人</strong>は要注意です。ワンストップ特例の申請書は翌年1月10日必着で、出し忘れると控除がゼロになります</li>
+</ul>
+<h2>それでも多くの人にはメリットが大きい</h2>
+<p>ここまでのデメリットの多くは、上限額を守り、手続きを期限内に済ませれば避けられるものです。住民税を納めている給与所得者であれば、実質2,000円の自己負担で返礼品を受け取れる制度として活用する価値は十分あります。まずは<a href="${rel(2, "")}">上限額シミュレーター</a>で自分の上限を確認し、<a href="${rel(2, "guide/rakuten/")}">楽天ふるさと納税のやり方</a>で具体的な手順を確認するのがおすすめです。</p>
+<section class="faq"><h2>よくある質問</h2><dl>
+<dt>ふるさと納税は本当に得ですか？</dt><dd>上限額の範囲内で寄付し、手続き（ワンストップ特例または確定申告）を期限内に済ませれば、実質2,000円の自己負担で返礼品を受け取れるため得になる人が多いです。ただし節税ではなく税金の前払いである点は理解しておく必要があります。</dd>
+<dt>いくら以上の年収ならやる意味がありますか？</dt><dd>目安として年収200万円台から数千円分の寄付枠が生まれます。当サイトの計算では年収300万円で上限額の目安は28,000円ほどです。住民税をほとんど納めていない年収なら、寄付する意味はほぼありません。</dd>
+<dt>専業主婦（夫）名義で寄付できますか？</dt><dd>寄付自体はできますが、収入がなく税金を納めていない人が寄付しても控除は受けられません。控除を受けたい場合は、住民税・所得税を納めている本人（多くは配偶者）の名義とクレジットカードで寄付する必要があります。</dd>
+</dl></section>
 ${guideLinks(2)}`);
 
   buildGuide("shikumi",
@@ -418,7 +449,7 @@ for (const t of linkTargets) {
   const f = path.join(OUT, t, "index.html");
   if (!fs.existsSync(f)) throw new Error(`BROKEN LINK TARGET: ${t}`);
 }
-const expected = 1 + INCOMES.length + 4 + GENRES.length; // guides: rakuten/schedule/onestop/shikumi
+const expected = 1 + INCOMES.length + 5 + GENRES.length; // guides: rakuten/schedule/onestop/shikumi/demerit
 if (emittedUrls.length !== expected) throw new Error(`page count ${emittedUrls.length} != ${expected}`);
 if (!emittedUrls.every(u => u.startsWith(BASE))) throw new Error("URL outside BASE");
 console.log(`OK: ${emittedUrls.length} pages + 404 + sitemap generated for ${TODAY_STR}`);

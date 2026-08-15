@@ -4,7 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const { FAMILY, FAMILY_KEYS, furusatoLimit, SOCIAL_RATE } = require("./lib/tax");
-const { GOODS } = require("./lib/affiliates");
+const { GOODS, GENRES } = require("./lib/affiliates");
 
 const BASE = "https://claudetarouggl-coder.github.io/furusato-keisan/";
 const GA_ID = "G-XLZ1ENDZ0Q";
@@ -266,6 +266,35 @@ ${affiliateBlock()}
 ${guideLinks(2)}`);
 }
 
+// ---- 返礼品ジャンル別ページ ----
+const genreNav = (depth, exceptSlug) => `<div class="links">${GENRES.filter(g => g.slug !== exceptSlug).map(g =>
+  `<a href="${rel(depth, `genre/${g.slug}/`)}">${g.emoji} ${esc(g.name)}</a>`).join("")}</div>`;
+
+function buildGenrePage(g) {
+  const tips = g.tips.map(t => `<li>${esc(t)}</li>`).join("\n");
+  const links = g.linkData.map(l =>
+    `<li><a href="${esc(l.url)}" rel="sponsored noopener" target="_blank">${esc(l.keyword)} を楽天で探す</a></li>`).join("\n");
+  const body = `
+<section class="feature"><p>${esc(g.intro)}</p></section>
+<h2>${esc(g.name)}の返礼品選びのポイント</h2>
+<ul style="margin-left:1.2em">${tips}</ul>
+<section class="note goods"><h2>楽天ふるさと納税で${esc(g.name)}の返礼品を探す<small>（広告を含みます）</small></h2>
+<p>楽天ふるさと納税は通常の楽天市場と同じ画面で寄付でき、楽天ポイントも付きます。レビュー件数順に並べ替えると人気の返礼品がすぐ見つかります。</p>
+<ul>${links}</ul></section>
+<section class="note"><p>寄付の前に、自己負担2,000円で済む上限額の確認を忘れずに。<a href="${rel(2, "")}">上限額シミュレーター</a>で年収と家族構成から10秒で計算できます。</p></section>
+<h2>他のジャンルを見る</h2>${genreNav(2, g.slug)}
+${guideLinks(2)}`;
+
+  writePage(`genre/${g.slug}/index.html`, shell({
+    path: `genre/${g.slug}/`, depth: 2,
+    title: `ふるさと納税の${g.name}返礼品の選び方｜失敗しないポイント`,
+    desc: `ふるさと納税で${g.name}の返礼品を選ぶときのポイントを解説。${g.tips[0]}。楽天ふるさと納税での探し方と、自己負担2,000円で済む上限額の確認方法もあわせて紹介します。`,
+    h1: `ふるさと納税の${g.name}返礼品の選び方`,
+    breadcrumbs: [{ name: "ホーム", path: "" }, { name: g.name, path: `genre/${g.slug}/` }],
+    body,
+  }));
+}
+
 // ---- トップページ（シミュレーター + 一覧表） ----
 function buildHome() {
   const headRow = FAMILY_KEYS.map(k => `<th>${esc(FAMILY[k].short)}</th>`).join("");
@@ -291,6 +320,8 @@ function buildHome() {
 <div class="tbl"><table><thead><tr><th>年収</th>${headRow}</tr></thead><tbody>${rows}</tbody></table></div>
 ${assumptionsNote}
 ${affiliateBlock()}
+<h2>返礼品ジャンル別の選び方</h2>
+${genreNav(0, null)}
 <section class="faq"><h2>よくある質問</h2><dl>
 <dt>上限額を超えて寄付するとどうなりますか？</dt><dd>超えた分は控除されず自己負担になります。年収が確定する前に寄付する場合は、目安より少し控えめが安全です。</dd>
 <dt>ふるさと納税はいつまでにすればいいですか？</dt><dd>その年の12月31日の決済完了分までが当年分です。詳しくは<a href="${rel(0, "guide/schedule/")}">期限まとめ</a>をご覧ください。</dd>
@@ -351,6 +382,7 @@ ${emittedUrls.map(u => `  <url><loc>${u}</loc><lastmod>${TODAY_STR}</lastmod></u
 fs.rmSync(OUT, { recursive: true, force: true });
 INCOMES.forEach((man, i) => buildIncomePage(man, i));
 buildGuides();
+GENRES.forEach(buildGenrePage);
 buildHome();
 build404();
 buildSitemap();
@@ -361,7 +393,7 @@ for (const t of linkTargets) {
   const f = path.join(OUT, t, "index.html");
   if (!fs.existsSync(f)) throw new Error(`BROKEN LINK TARGET: ${t}`);
 }
-const expected = 1 + INCOMES.length + 3;
+const expected = 1 + INCOMES.length + 3 + GENRES.length;
 if (emittedUrls.length !== expected) throw new Error(`page count ${emittedUrls.length} != ${expected}`);
 if (!emittedUrls.every(u => u.startsWith(BASE))) throw new Error("URL outside BASE");
 console.log(`OK: ${emittedUrls.length} pages + 404 + sitemap generated for ${TODAY_STR}`);

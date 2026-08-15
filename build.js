@@ -128,6 +128,7 @@ const assumptionsNote = `<section class="note"><h2>計算の前提</h2>
 </ul></section>`;
 
 const guideLinks = depth => `<h2>あわせて読む</h2><div class="links">
+<a href="${rel(depth, "guide/rakuten/")}">楽天ふるさと納税のやり方</a>
 <a href="${rel(depth, "guide/schedule/")}">ふるさと納税はいつまで？期限まとめ</a>
 <a href="${rel(depth, "guide/onestop/")}">ワンストップ特例とは</a>
 <a href="${rel(depth, "guide/shikumi/")}">上限額の仕組みと計算式</a></div>`;
@@ -237,6 +238,30 @@ ${guideLinks(2)}`);
 <dt>6自治体以上に寄付してしまいました。</dt><dd>ワンストップは使えません。確定申告をすれば全額分の控除を受けられます。</dd>
 <dt>控除されたかどうかはどこで確認できますか？</dt><dd>翌年6月ごろに届く住民税決定通知書の「寄附金税額控除」欄で確認できます。</dd>
 </dl></section>
+${affiliateBlock()}
+${guideLinks(2)}`);
+
+  buildGuide("rakuten",
+    "楽天ふるさと納税のやり方｜買い物と同じ5ステップ",
+    "楽天ふるさと納税は通常の楽天市場の買い物と同じ手順で寄付できます。上限額の確認→返礼品選び→寄付者情報の確認→ワンストップ申請までの5ステップと、楽天ポイントで実質自己負担がゼロになる仕組みを解説します。",
+    "楽天ふるさと納税のやり方", `
+<section class="feature"><p>楽天ふるさと納税は、<strong>普段の楽天市場の買い物とまったく同じ画面</strong>で寄付ができます。特別な登録は不要で、楽天会員ならそのまま使えます。寄付額に対しても楽天ポイントが付くため、自己負担の2,000円がポイントで実質相殺できるのが最大の強みです。</p></section>
+<h2>5ステップでできる</h2>
+<div class="tbl"><table><thead><tr><th>ステップ</th><th>やること</th><th>注意点</th></tr></thead><tbody>
+<tr><td>1. 上限額を調べる</td><td><a href="${rel(2, "")}">シミュレーター</a>で年収と家族構成から目安を確認</td><td>少し控えめに見積もるのが安全</td></tr>
+<tr><td>2. 返礼品を選ぶ</td><td>楽天市場で「ふるさと納税」と検索、またはジャンルから探す</td><td>レビュー件数順の並べ替えが便利</td></tr>
+<tr><td>3. 寄付者情報を確認</td><td>購入画面で「注文者情報＝住民票の情報」か確認</td><td><strong>住民票と違う住所・氏名では控除されません</strong></td></tr>
+<tr><td>4. ワンストップ特例を選択</td><td>申込画面のチェックボックスで「利用する」を選ぶ</td><td>寄付先が5自治体以内の給与所得者のみ</td></tr>
+<tr><td>5. 申請書を返送</td><td>届いた申請書を翌年1月10日必着で返送（オンライン申請可の自治体も）</td><td>忘れたら確定申告に切替</td></tr>
+</tbody></table></div>
+<h2>ポイントで「実質負担ゼロ」になる仕組み</h2>
+<p>ふるさと納税の自己負担は2,000円ですが、楽天では寄付額も通常の買い物と同じくポイント付与の対象です。たとえば5万円の寄付で還元率4%なら2,000ポイント。<strong>自己負担分がそのまま戻ってくる</strong>計算になります。お買い物マラソンや5と0のつく日などポイントアップのタイミングを狙うと、実質プラスになることもあります。</p>
+<h2>よくある失敗</h2>
+<ul style="margin-left:1.2em">
+<li><strong>家族のアカウントで寄付してしまう</strong> — 控除を受ける本人の楽天アカウント・本人名義の決済で寄付する必要があります</li>
+<li><strong>送付先を自宅以外にして注文者情報も変えてしまう</strong> — 返礼品の送付先は変えてもよいですが、注文者情報は住民票どおりに</li>
+<li><strong>年末ギリギリの銀行振込</strong> — 年内扱いにならないリスクがあります。クレジットカード決済が確実です</li>
+</ul>
 ${affiliateBlock()}
 ${guideLinks(2)}`);
 
@@ -393,7 +418,7 @@ for (const t of linkTargets) {
   const f = path.join(OUT, t, "index.html");
   if (!fs.existsSync(f)) throw new Error(`BROKEN LINK TARGET: ${t}`);
 }
-const expected = 1 + INCOMES.length + 3 + GENRES.length;
+const expected = 1 + INCOMES.length + 4 + GENRES.length; // guides: rakuten/schedule/onestop/shikumi
 if (emittedUrls.length !== expected) throw new Error(`page count ${emittedUrls.length} != ${expected}`);
 if (!emittedUrls.every(u => u.startsWith(BASE))) throw new Error("URL outside BASE");
 console.log(`OK: ${emittedUrls.length} pages + 404 + sitemap generated for ${TODAY_STR}`);

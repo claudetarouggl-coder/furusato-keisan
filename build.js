@@ -131,6 +131,7 @@ const guideLinks = depth => `<h2>あわせて読む</h2><div class="links">
 <a href="${rel(depth, "guide/rakuten/")}">楽天ふるさと納税のやり方</a>
 <a href="${rel(depth, "guide/schedule/")}">ふるさと納税はいつまで？期限まとめ</a>
 <a href="${rel(depth, "guide/onestop/")}">ワンストップ特例とは</a>
+<a href="${rel(depth, "guide/onestop-online/")}">ワンストップのオンライン申請</a>
 <a href="${rel(depth, "guide/shikumi/")}">上限額の仕組みと計算式</a>
 <a href="${rel(depth, "guide/demerit/")}">デメリット・向かない人</a></div>`;
 
@@ -155,6 +156,8 @@ function buildIncomePage(man, idx) {
 <div class="tbl"><table><thead><tr><th>家族構成</th><th>控除上限額（目安）</th><th>寄付できる額</th></tr></thead><tbody>${rows}</tbody></table></div>
 ${assumptionsNote}
 ${affiliateBlock()}
+<h2>返礼品をジャンルから探す</h2>
+${genreNav(2, null)}
 <section class="faq"><h2>よくある質問</h2><dl>
 <dt>年収${man}万円で${yen(single)}を超えて寄付したらどうなりますか？</dt><dd>超えた分は控除されず、純粋な自己負担（寄付）になります。上限ぎりぎりを狙うより、少し余裕を持たせるのが安全です。</dd>
 <dt>この金額は手取りですか？額面ですか？</dt><dd>額面（税金や社会保険料が引かれる前の年収）です。源泉徴収票の「支払金額」にあたります。</dd>
@@ -240,6 +243,46 @@ ${guideLinks(2)}`);
 <dt>控除されたかどうかはどこで確認できますか？</dt><dd>翌年6月ごろに届く住民税決定通知書の「寄附金税額控除」欄で確認できます。</dd>
 </dl></section>
 ${affiliateBlock()}
+${guideLinks(2)}`);
+
+  buildGuide("onestop-online",
+    "ワンストップ特例のオンライン申請のやり方｜郵送不要でスマホ完結",
+    `ワンストップ特例は、マイナンバーカードがあれば紙の申請書を郵送せずスマホだけで申請できる自治体が増えています。必要なもの、申請の流れ、注意点をまとめました。`,
+    "ワンストップ特例のオンライン申請", `
+<section class="feature"><p>多くの自治体で、紙の申請書を郵送せずスマホだけでワンストップ特例を申請できるようになりました。マイナンバーカードが必須です。</p></section>
+<h2>必要なもの</h2>
+<ul style="margin-left:1.2em">
+<li>マイナンバーカード（署名用電子証明書のパスワード＝英数字6〜16桁が有効なもの）</li>
+<li>マイナンバーカード読み取り対応スマホ</li>
+<li>寄付時の受付番号やメール</li>
+</ul>
+<h2>代表的なオンライン申請サービス</h2>
+<div class="tbl"><table><thead><tr><th>主なサービス</th><th>備考</th></tr></thead><tbody>
+<tr><td>自治体マイページ</td><td>寄付履歴の確認と申請をまとめて行えるタイプ</td></tr>
+<tr><td>IAM（アイアム）</td><td>スマホアプリでマイナンバーカードを読み取って申請</td></tr>
+<tr><td>e-NISC</td><td>対応自治体の申請フォームへ直接アクセスして申請</td></tr>
+</tbody></table></div>
+<p>寄付先自治体がどれに対応しているかは、寄付後の案内メールや自治体サイトで確認してください。</p>
+<h2>申請の流れ</h2>
+<ul style="margin-left:1.2em">
+<li>対応サービスにアクセス</li>
+<li>寄付情報の確認（受付番号など）</li>
+<li>マイナンバーカードをスマホで読み取り</li>
+<li>署名用パスワード入力</li>
+<li>完了（申請書の郵送不要）</li>
+</ul>
+<h2>注意点</h2>
+<ul style="margin-left:1.2em">
+<li>期限は紙と同じ翌年1月10日</li>
+<li>署名用パスワードを5回間違えるとロックされ市区町村窓口で再設定</li>
+<li>対応していない自治体は従来どおり郵送</li>
+<li>引っ越したら翌年1月10日までに変更届（オンライン申請済みでも住所変更は要手続き）</li>
+</ul>
+<section class="faq"><h2>よくある質問</h2><dl>
+<dt>全部の自治体でオンライン申請できますか？</dt><dd>できません。対応状況は自治体ごとに確認してください。</dd>
+<dt>マイナンバーカードがない場合は？</dt><dd>従来の紙の申請書＋本人確認書類の写しで郵送してください。</dd>
+<dt>オンライン申請したか忘れました。</dt><dd>各サービスのマイページで申請履歴を確認できます。</dd>
+</dl></section>
 ${guideLinks(2)}`);
 
   buildGuide("rakuten",
@@ -449,7 +492,7 @@ for (const t of linkTargets) {
   const f = path.join(OUT, t, "index.html");
   if (!fs.existsSync(f)) throw new Error(`BROKEN LINK TARGET: ${t}`);
 }
-const expected = 1 + INCOMES.length + 5 + GENRES.length; // guides: rakuten/schedule/onestop/shikumi/demerit
+const expected = 1 + INCOMES.length + 6 + GENRES.length; // guides: rakuten/schedule/onestop/onestop-online/shikumi/demerit
 if (emittedUrls.length !== expected) throw new Error(`page count ${emittedUrls.length} != ${expected}`);
 if (!emittedUrls.every(u => u.startsWith(BASE))) throw new Error("URL outside BASE");
 console.log(`OK: ${emittedUrls.length} pages + 404 + sitemap generated for ${TODAY_STR}`);

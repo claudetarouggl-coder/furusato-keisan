@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 // ふるさと納税 控除上限額シミュレーター 静的サイトジェネレータ
 // 生成物: docs/ 以下に index.html + 年収別25ページ + ガイド3ページ + sitemap.xml + 404.html
 const fs = require("fs");
@@ -135,7 +135,9 @@ const guideLinks = depth => `<h2>あわせて読む</h2><div class="links">
 <a href="${rel(depth, "guide/onestop/")}">ワンストップ特例とは</a>
 <a href="${rel(depth, "guide/onestop-online/")}">ワンストップのオンライン申請</a>
 <a href="${rel(depth, "guide/shikumi/")}">上限額の仕組みと計算式</a>
-<a href="${rel(depth, "guide/demerit/")}">デメリット・向かない人</a></div>`;
+<a href="${rel(depth, "guide/demerit/")}">デメリット・向かない人</a>
+<a href="${rel(depth, "guide/jutaku-loan/")}">住宅ローン控除との併用</a>
+<a href="${rel(depth, "guide/ideco/")}">iDeCoとの併用</a></div>`;
 
 // ---- 年収別ページ ----
 function buildIncomePage(man, idx) {
@@ -398,6 +400,65 @@ ${guideLinks(2)}`);
 <p>迷ったら<a href="${rel(2, "")}">シミュレーター</a>で目安を確認し、少し控えめに寄付するのが安全です。</p>
 ${affiliateBlock()}
 ${guideLinks(2)}`);
+
+  buildGuide("jutaku-loan",
+    "ふるさと納税と住宅ローン控除は併用できる？影響と注意点",
+    "ふるさと納税と住宅ローン控除は併用できます。ワンストップ特例を使えば住宅ローン控除への影響は原則ありません。確定申告でふるさと納税を申告する場合に注意したい住民税控除の上限との関係を解説します。",
+    "住宅ローン控除との併用", `
+<section class="feature"><p>結論から言うと、ふるさと納税と住宅ローン控除は<strong>併用できます</strong>。<strong>ワンストップ特例を使う場合は、住宅ローン控除への影響は原則ありません。</strong>一方、確定申告でふるさと納税を申告する場合は、人によっては控除の一部が使いきれなくなることがあります。</p></section>
+<h2>ワンストップ特例を使うなら影響は原則なし</h2>
+<p>ワンストップ特例で申請したふるさと納税は、所得税からは控除されず<strong>全額が翌年度の住民税から控除</strong>されます。所得控除（寄附金控除）を使わないため課税所得は変わらず、住宅ローン控除（税額控除）の計算にも影響しません。</p>
+<section class="note"><p>ただし、<strong>住宅ローン控除の初年度は確定申告が必須</strong>です。この年はふるさと納税でワンストップ特例を使うことができないため、後述の確定申告の注意点があてはまります。2年目以降、年末調整だけで住宅ローン控除の手続きが完結する会社員であれば、ワンストップ特例を使うことで影響を避けられます。</p></section>
+<h2>確定申告でふるさと納税を申告する場合の注意点</h2>
+<p>確定申告でふるさと納税を申告すると、寄附金控除は所得控除として先に反映され、課税所得・所得税額が下がります。住宅ローン控除は税額控除で、所得税から控除しきれなかった分は住民税から控除されますが、<strong>その住民税からの控除には上限があります</strong>（前年の所得税の課税総所得金額等に応じた一定割合で、上限額が定められています）。</p>
+<p>ふるさと納税の寄附金控除で先に所得税額が下がっていると、住宅ローン控除が所得税から引ききれる金額が減り、住民税に回る控除額が増えます。その増えた分がこの上限を超えると、<strong>超えた分は控除されず、住宅ローン控除の一部を使いきれない</strong>ことがあります。</p>
+<h2>影響が出やすいケース</h2>
+<ul style="margin-left:1.2em">
+<li>住宅ローン残高が多く、住宅ローン控除額自体が大きい人</li>
+<li>医療費控除や住宅ローン控除の初年度など、<strong>他の理由で確定申告が必要</strong>な人（ワンストップ特例が使えないため）</li>
+<li>寄付先が6自治体以上あり、ワンストップ特例の条件（5自治体以内）を満たせない人</li>
+</ul>
+<h2>ワンストップ特例の可否と影響の整理</h2>
+<div class="tbl"><table><thead><tr><th>ケース</th><th>住宅ローン控除への影響</th></tr></thead><tbody>
+<tr><td>ワンストップ特例を利用</td><td>原則なし（住民税の控除枠を圧迫しない）</td></tr>
+<tr><td>確定申告（住宅ローン控除が所得税で引ききれている人）</td><td>ほぼなし</td></tr>
+<tr><td>確定申告（住宅ローン控除が所得税で引ききれていない人）</td><td>住民税控除の上限超過分が使いきれない可能性あり</td></tr>
+</tbody></table></div>
+<section class="note"><p>影響の有無や金額は、住宅ローン残高・年収・他の控除の有無など個々の状況によって変わります。正確な金額は<strong>税理士・税務署・お住まいの自治体</strong>にご確認ください。当サイトのシミュレーターは住宅ローン控除を考慮していないため、該当する方は表示された上限額より少し控えめに見積もることをおすすめします。</p></section>
+${affiliateBlock()}
+<section class="faq"><h2>よくある質問</h2><dl>
+<dt>住宅ローン控除1年目でもふるさと納税はできますか？</dt><dd>できます。ただし1年目は住宅ローン控除自体の確定申告が必須のため、ふるさと納税もあわせて確定申告で申告することになります（ワンストップ特例は使えません）。</dd>
+<dt>ワンストップ特例なら何も気にしなくていいですか？</dt><dd>住宅ローン控除への影響という意味では原則気にしなくて大丈夫です。ただしふるさと納税自体の上限額（寄付しすぎると自己負担になる点）は別途確認が必要です。</dd>
+<dt>どのくらい影響が出るか自分で計算できますか？</dt><dd>住宅ローン控除・住民税所得割の計算が絡むため簡易な目安計算は難しく、正確な金額は税務署や税理士への確認をおすすめします。</dd>
+</dl></section>
+${guideLinks(2)}`);
+
+  buildGuide("ideco",
+    "ふるさと納税とiDeCoは併用できる？上限額への影響を解説",
+    "ふるさと納税とiDeCoは併用できます。iDeCoの掛金は所得控除のため、課税所得が下がりふるさと納税の上限額も下がる点に注意。当サイトの課税所得モードでiDeCo拠出後の上限額を試算する方法も紹介します。",
+    "iDeCoとの併用", `
+<section class="feature"><p>ふるさと納税とiDeCo（個人型確定拠出年金）は<strong>併用できます</strong>。どちらも代表的な節税手段で、組み合わせて使っている人も多い制度です。ただし1点、見落としやすい注意点があります。</p></section>
+<h2>iDeCoの掛金でふるさと納税の上限額が下がる</h2>
+<p>iDeCoの掛金は全額が<strong>小規模企業共済等掛金控除（所得控除）</strong>の対象です。所得控除は課税所得を直接減らすため、iDeCoを始めると課税所得が下がり、その結果<strong>ふるさと納税の上限額の基準となる住民税所得割額も下がり、上限額そのものが下がります</strong>。iDeCoの節税効果自体は変わりませんが、「iDeCoを始める前と同じ感覚でふるさと納税の上限まで寄付する」と上限を超えてしまう可能性があるので注意してください。</p>
+<h2>試算例：年収500万円・iDeCo月2.3万円の場合</h2>
+<p>当サイトのシミュレーターと同じ計算ロジックで、年収500万円・独身または共働きのケースを試算すると次のとおりです。</p>
+<div class="tbl"><table><thead><tr><th></th><th>ふるさと納税の上限額（目安）</th></tr></thead><tbody>
+<tr><td>iDeCoなし</td><td>61,000円</td></tr>
+<tr><td>iDeCo月2.3万円（年27.6万円）拠出</td><td>54,000円</td></tr>
+<tr><td>差額</td><td>約7,000円ダウン</td></tr>
+</tbody></table></div>
+<p>iDeCoの年間拠出額27.6万円をそのまま住民税の課税所得から差し引いて計算した結果です。年収や家族構成、掛金額によって下がり幅は変わるため、<strong>あくまで一例の目安</strong>としてご覧ください。</p>
+<h2>正確な上限額はシミュレーターの「課税所得から計算」モードで</h2>
+<p>iDeCoに加入している人は、給与収入だけを入力する通常モードでは正確な上限額が出ません。<a href="${rel(2, "")}#mode-taxable">トップページのシミュレーター</a>にある<strong>「課税所得から計算」モード</strong>を使い、住民税決定通知書の課税標準額（iDeCoの掛金が反映済みの金額）をそのまま入力すれば、iDeCo拠出後の上限額の目安がわかります。</p>
+<h2>それでも併用をやめる理由にはならない</h2>
+<p>ふるさと納税の上限額が数千円下がるとしても、多くの場合iDeCo自体の節税効果（掛金の所得控除による所得税・住民税の軽減）の方が大きいとされています。「上限が下がるから」という理由だけでiDeCoの併用をやめる必要はなく、<strong>ふるさと納税の寄付額を、iDeCo加入後の上限に合わせて少し控えめにする</strong>のが実務的な対応です。</p>
+${affiliateBlock()}
+<section class="faq"><h2>よくある質問</h2><dl>
+<dt>iDeCoを始めたら、いくら下がるか正確にわかりますか？</dt><dd>年収・家族構成・掛金額によって異なるため、正確には住民税決定通知書の課税標準額を使って<a href="${rel(2, "")}#mode-taxable">課税所得モード</a>で試算するのが確実です。</dd>
+<dt>iDeCoとふるさと納税、どちらを優先すべきですか？</dt><dd>目的が異なるため優先順位をつける性質のものではありません。iDeCoは老後資金づくり、ふるさと納税は返礼品を伴う寄付です。上限額の計算順としては、iDeCoの掛金を先に決めてから、その後の課税所得でふるさと納税の上限を確認するとずれが生じません。</dd>
+<dt>iDeCoの掛金額はいつ変更できますか？</dt><dd>年に1回、決まった時期に変更できます（制度上の詳細は加入している金融機関でご確認ください）。掛金を変更した年はふるさと納税の上限額も変わる可能性があります。</dd>
+</dl></section>
+${guideLinks(2)}`);
 }
 
 // ---- 返礼品ジャンル別ページ ----
@@ -566,7 +627,7 @@ for (const t of linkTargets) {
   const f = path.join(OUT, t, "index.html");
   if (!fs.existsSync(f)) throw new Error(`BROKEN LINK TARGET: ${t}`);
 }
-const expected = 1 + INCOMES.length + 7 + GENRES.length; // guides: nenmatsu/rakuten/schedule/onestop/onestop-online/shikumi/demerit
+const expected = 1 + INCOMES.length + 9 + GENRES.length; // guides: nenmatsu/rakuten/schedule/onestop/onestop-online/shikumi/demerit/jutaku-loan/ideco
 if (emittedUrls.length !== expected) throw new Error(`page count ${emittedUrls.length} != ${expected}`);
 if (!emittedUrls.every(u => u.startsWith(BASE))) throw new Error("URL outside BASE");
 console.log(`OK: ${emittedUrls.length} pages + 404 + sitemap generated for ${TODAY_STR}`);

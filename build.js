@@ -7,6 +7,20 @@ const { FAMILY, FAMILY_KEYS, furusatoLimit, limitFromTaxable, SOCIAL_RATE } = re
 const { GOODS, GENRES } = require("./lib/affiliates");
 
 const BASE = "https://claudetarouggl-coder.github.io/furusato-keisan/";
+// 姉妹サイト相互リンク（自サイトは除外）
+const RELATED_SITES = [
+  ["https://claudetarouggl-coder.github.io/kyou-no-taiyo/", "きょうの太陽"],
+  ["https://claudetarouggl-coder.github.io/hinode-calendar/", "日の出・日の入りカレンダー"],
+  ["https://claudetarouggl-coder.github.io/furusato-keisan/", "ふるさと納税 上限額計算"],
+  ["https://claudetarouggl-coder.github.io/nenrei-hayami/", "年齢早見表"],
+  ["https://claudetarouggl-coder.github.io/rokuyo-calendar/", "六曜カレンダー"],
+  ["https://claudetarouggl-coder.github.io/tester-match/", "テスターマッチ"],
+  ["https://claudetarouggl-coder.github.io/houji-hayami/", "法事・回忌早見表"],
+  ["https://claudetarouggl-coder.github.io/pet-nenrei/", "犬・猫の年齢換算"],
+  ["https://claudetarouggl-coder.github.io/nemuri-keisan/", "睡眠サイクル計算"],
+];
+const RELATED_NAV = `<p class="related">姉妹サイト: ${RELATED_SITES.filter(([u]) => u !== BASE)
+  .map(([u, n]) => `<a href="${u}" rel="noopener">${n}</a>`).join("・")}</p>`;
 const GA_ID = "G-XLZ1ENDZ0Q";
 const OUT = path.join(__dirname, "docs");
 
@@ -97,6 +111,7 @@ ${body}
 <footer>
 掲載額は給与収入のみ・社会保険料を収入の${(SOCIAL_RATE * 100).toFixed(1)}%とした概算の目安です（千円未満切捨て）。<br>
 iDeCo・医療費控除・住宅ローン控除などがある場合は上限が変わります。正確な金額は源泉徴収票をもとに<a href="https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/mechanism/deduction.html" rel="noopener">総務省の資料</a>やお住まいの自治体でご確認ください。
+${RELATED_NAV}
 </footer>
 </main>
 ${extraScript}

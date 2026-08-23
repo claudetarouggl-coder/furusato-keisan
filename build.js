@@ -134,6 +134,7 @@ const guideLinks = depth => `<h2>あわせて読む</h2><div class="links">
 <a href="${rel(depth, "guide/schedule/")}">ふるさと納税はいつまで？期限まとめ</a>
 <a href="${rel(depth, "guide/onestop/")}">ワンストップ特例とは</a>
 <a href="${rel(depth, "guide/onestop-online/")}">ワンストップのオンライン申請</a>
+<a href="${rel(depth, "guide/kakutei-shinkoku/")}">確定申告のやり方</a>
 <a href="${rel(depth, "guide/shikumi/")}">上限額の仕組みと計算式</a>
 <a href="${rel(depth, "guide/demerit/")}">デメリット・向かない人</a>
 <a href="${rel(depth, "guide/jutaku-loan/")}">住宅ローン控除との併用</a>
@@ -320,6 +321,54 @@ ${guideLinks(2)}`);
 <dt>マイナンバーカードがない場合は？</dt><dd>従来の紙の申請書＋本人確認書類の写しで郵送してください。</dd>
 <dt>オンライン申請したか忘れました。</dt><dd>各サービスのマイページで申請履歴を確認できます。</dd>
 </dl></section>
+${guideLinks(2)}`);
+
+  buildGuide("kakutei-shinkoku",
+    "ふるさと納税の確定申告のやり方【いつ・必要書類・e-Tax】",
+    "ふるさと納税で確定申告が必要なのはどんな人か、いつ・何を準備すればいいかを解説。寄附金受領証明書（電子データ可）や源泉徴収票などの必要書類、e-Taxでの申告手順、ワンストップ特例との違いをまとめました。",
+    "ふるさと納税の確定申告のやり方", `
+<section class="feature"><p>ふるさと納税の控除は、<a href="${rel(2, "guide/onestop/")}">ワンストップ特例</a>を使わない（使えない）場合、確定申告で申告します。ここでは確定申告が必要になる人の条件、申告の時期、必要書類、e-Taxでの申告の流れを順番に解説します。</p></section>
+<h2>確定申告が必要な人</h2>
+<ul style="margin-left:1.2em">
+<li><strong>1年間の寄付先が6自治体以上</strong>ある人（ワンストップ特例は5自治体以内が条件のため使えません）</li>
+<li>ワンストップ特例の<strong>申請書を出し忘れた・翌年1月10日必着に間に合わなかった</strong>人</li>
+<li><strong>医療費控除や住宅ローン控除の初年度</strong>など、そもそも確定申告をする給与所得者</li>
+</ul>
+<section class="note"><p>3つ目のケースが最大の落とし穴です。医療費控除などのために確定申告をする場合、<strong>ワンストップ特例の申請書をすでに提出していてもその申請は自動的に無効になり</strong>、確定申告書の寄附金控除欄に<strong>その年の寄付を全件含め直す</strong>必要があります。書き忘れると、ワンストップ特例分も含めて控除がゼロになります。詳しくは<a href="${rel(2, "guide/onestop/")}">ワンストップ特例とは</a>もあわせてご確認ください。</p></section>
+<h2>申告の時期</h2>
+<div class="tbl"><table><thead><tr><th>ケース</th><th>期間</th></tr></thead><tbody>
+<tr><td>通常の確定申告（事業所得がある人・納税額がある人など）</td><td>原則、寄付をした年の<strong>翌年2月16日〜3月15日</strong></td></tr>
+<tr><td>還付申告のみ（給与所得者がふるさと納税や医療費控除の還付だけを受ける場合）</td><td>2月16日を待たず、<strong>翌年1月1日から5年間</strong>いつでも提出可能</td></tr>
+</tbody></table></div>
+<section class="note"><p>3月15日が土日祝にあたる年は期限が数日ずれることがあります。正確な日付はその年の<a href="https://www.nta.go.jp/taxes/shiraberu/shinkoku/tokushu/index.htm" rel="noopener">国税庁の確定申告特集ページ</a>でご確認ください。すでに申告書を提出していて寄附金控除の記載を忘れたことに後から気づいた場合は、5年以内の「更正の請求」で訂正できます。</p></section>
+<h2>必要書類</h2>
+<div class="tbl"><table><thead><tr><th>書類</th><th>入手方法</th></tr></thead><tbody>
+<tr><td>寄附金受領証明書、または寄附金控除に関する証明書（電子データ）</td><td>寄付先自治体から郵送されるか、利用したふるさと納税サイトのマイページからXML形式でダウンロード（楽天ふるさと納税など多くのサイトが対応）</td></tr>
+<tr><td>源泉徴収票</td><td>勤務先から発行。e-Taxならスマホのカメラで読み取って入力することも可能</td></tr>
+<tr><td>マイナンバーが分かるもの</td><td>マイナンバーカードなど</td></tr>
+<tr><td>還付金の受取口座</td><td>申告者本人名義の口座番号</td></tr>
+</tbody></table></div>
+<section class="note"><p>電子データ（XML形式）の証明書はそのまま印刷しても書類としては使えません。書面で提出する場合は国税庁の「QRコード付証明書等作成システム」で読み込んで印刷するか、e-Taxで電子データのまま添付・送信します。紙の証明書（原本）が届いている場合は、それを添付すれば電子データは不要です。</p></section>
+<h2>e-Taxで申告する流れ</h2>
+<div class="tbl"><table><thead><tr><th>ステップ</th><th>内容</th></tr></thead><tbody>
+<tr><td>1. 準備</td><td>マイナンバーカードと、利用者証明用電子証明書のパスワード（数字4桁）を用意。マイナンバーカード読み取り対応のスマホがあると手続きが早い</td></tr>
+<tr><td>2. アクセス</td><td>国税庁「<a href="https://www.keisan.nta.go.jp/kyoutu/ky/sm/top" rel="noopener">確定申告書等作成コーナー</a>」にスマホまたはPCでアクセスし、マイナンバーカードでログイン</td></tr>
+<tr><td>3. 収入の入力</td><td>源泉徴収票をカメラで読み取るか、金額を手入力</td></tr>
+<tr><td>4. 寄附金控除の入力</td><td>「寄附金控除」の欄で「ふるさと納税（都道府県、市区町村に対する寄附金）」を選択。証明書のXMLデータを読み込めば金額が自動反映される</td></tr>
+<tr><td>5. 還付先口座の入力</td><td>還付金を受け取る本人名義の口座を入力</td></tr>
+<tr><td>6. 送信</td><td>e-Taxで送信すれば完了。書面提出を選ぶ場合は印刷して証明書を添付し税務署へ郵送・持参</td></tr>
+</tbody></table></div>
+<h2>ワンストップ特例と確定申告、控除される税金の違い</h2>
+<p><a href="${rel(2, "guide/onestop/")}">ワンストップ特例</a>は控除の全額が翌年度の<strong>住民税</strong>から差し引かれるのに対し、確定申告では控除が2つに分かれます。（寄付額－2,000円）のうち所得税率に応じた分は<strong>所得税から還付</strong>され（申告から1〜2ヶ月ほどで指定口座に振り込み）、残りは翌年度の<strong>住民税から減額</strong>されます。振込か減額かの違いだけで、<strong>控除の合計額はどちらの方法でもほぼ同じ</strong>になるよう制度上設計されています。仕組みの詳細は<a href="${rel(2, "guide/shikumi/")}">上限額の仕組みと計算式</a>で解説しています。</p>
+${affiliateBlock()}
+<section class="faq"><h2>よくある質問</h2><dl>
+<dt>ワンストップ特例と確定申告、結局どちらが得ですか？</dt><dd>控除される合計額は原則同じです。ただし<a href="${rel(2, "guide/jutaku-loan/")}">住宅ローン控除</a>の初年度など、確定申告で他の控除と重なると住民税側の控除枠を使いきれないことがあるため注意が必要です。該当する方は上限額に余裕を持たせることをおすすめします。</dd>
+<dt>確定申告を忘れたらどうなりますか？</dt><dd>そもそも確定申告をしていなかった人は、翌年1月1日から5年以内なら還付申告としていつでも提出できます。すでに申告書を提出していて寄附金控除の記載を忘れた人は、法定申告期限から5年以内の「更正の請求」で訂正できます。どちらの場合も期限内なら控除を受けられます。</dd>
+<dt>ワンストップ特例の申請書をすでに出しています。確定申告することになったらどうすればいいですか？</dt><dd>その申請は自動的に無効になるため、確定申告書の寄附金控除欄に<strong>その年に寄付した全ての自治体分</strong>を記載し直してください。ワンストップ申請済みの分を除いて申告してしまうと、その分の控除が受けられなくなります。</dd>
+<dt>寄附金受領証明書をなくしてしまいました。</dt><dd>寄付先の自治体、または利用したふるさと納税サイトに再発行を依頼できます。電子交付（マイナポータル連携やポータルのマイページ）に対応している場合は、証明書データをオンラインで再取得できることが多いです。</dd>
+<dt>医療費控除や住宅ローン控除（初年度）と一緒に申告できますか？</dt><dd>できます。同じ確定申告書の中で、寄附金控除の欄にふるさと納税分をまとめて入力すれば、他の控除と合わせて自動計算されます。証明書類はそれぞれの控除ごとに必要です。</dd>
+</dl></section>
+<section class="note"><p>${TODAY.y}年8月時点の情報です。申告期間や証明書の様式・対応状況は年により変更される場合があるため、申告前に<a href="https://www.nta.go.jp/taxes/shiraberu/shinkoku/kakutei/koujyo/kifukin.htm" rel="noopener">国税庁の該当ページ</a>や税務署で最新情報をご確認ください。</p></section>
 ${guideLinks(2)}`);
 
   buildGuide("rakuten",
@@ -627,7 +676,7 @@ for (const t of linkTargets) {
   const f = path.join(OUT, t, "index.html");
   if (!fs.existsSync(f)) throw new Error(`BROKEN LINK TARGET: ${t}`);
 }
-const expected = 1 + INCOMES.length + 9 + GENRES.length; // guides: nenmatsu/rakuten/schedule/onestop/onestop-online/shikumi/demerit/jutaku-loan/ideco
+const expected = 1 + INCOMES.length + 10 + GENRES.length; // guides: nenmatsu/rakuten/schedule/onestop/onestop-online/kakutei-shinkoku/shikumi/demerit/jutaku-loan/ideco
 if (emittedUrls.length !== expected) throw new Error(`page count ${emittedUrls.length} != ${expected}`);
 if (!emittedUrls.every(u => u.startsWith(BASE))) throw new Error("URL outside BASE");
 console.log(`OK: ${emittedUrls.length} pages + 404 + sitemap generated for ${TODAY_STR}`);
